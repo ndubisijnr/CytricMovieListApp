@@ -28,24 +28,3 @@ function MovieCard({ title, published, image }: cardProps) {
 }
 
 export default MovieCard;
-
-// /* Frame 16 */
-//
-// /* Auto layout */
-// display: flex;
-// flex-direction: column;
-// align-items: flex-start;
-// padding: 8px 8px 16px;
-// gap: 16px;
-//
-// position: absolute;
-// left: 0%;
-// right: 0%;
-// top: 0%;
-// bottom: 0%;
-//
-// /* MovieCard color */
-// background: #092C39;
-// backdrop-filter: blur(100px);
-// /* Note: backdrop-filter has minimal browser support */
-// border-radius: 12px;

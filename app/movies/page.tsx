@@ -6,6 +6,8 @@ import Image from "next/image";
 import AddMoreMoviesIcon from "../../public/add_icon.png"
 import AddLogoutIcon from "../../public/logout.png"
 import MovieCard from "../../components/card/MovieCard"
+import AddMovieImage from "@/components/form/AddMovieImage";
+
 const MovieListPage = () => {
   const [movieResponse, setMovieResponse] = useState({})
 
@@ -16,7 +18,6 @@ const MovieListPage = () => {
 
     </div>
   }
-
 
 
   const MovieList = () => {
@@ -78,17 +79,18 @@ const MovieListPage = () => {
 
     </div>
   }
+
   return <>
     {!movieResponse ?
         <div className="flex min-h-screen items-center">
           <EmptyState/></div>
         :
         <div className="flex min-h-screen">
-          <MovieList/>
+          {/*<MovieList/>*/}
+          <AddMovieImage />
         </div>
     }
   </>
-};
+}
 
-export default MovieListPage;
-
+export default MovieListPage

@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import tailwindcssFilters from "tailwindcss-filters"
+import tailwindcssFilters from "tailwindcss-filters";
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
