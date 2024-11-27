@@ -1,9 +1,24 @@
 import { db } from "@/utils/db";
+import { EditMovieSchema } from "@/utils/validators/movie.validator";
 import { NextResponse } from "next/server";
 import { authenticateUser } from "../../controllers/auth.controller";
 
 type Params = Promise<{ slug: string }>;
-export const GET = async (_: Request, segmentData: { params: Params }) => {
+export const GET = async (req: Request, segmentData: { params: Params }) => {
+  // authenticate user
+
+  const authUser = await authenticateUser(req.headers);
+
+  if (!authUser) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Unaunthenticated user",
+      },
+      { status: 401 }
+    );
+  }
+
   const { slug } = await segmentData.params;
 
   try {
@@ -40,45 +55,44 @@ export const GET = async (_: Request, segmentData: { params: Params }) => {
   }
 };
 
-export const DELETE = async (req: Request, segmentData: { params: Params }) => {
-  const { slug } = await segmentData.params;
+export const PATCH = async (req: Request, segmentData: { params: Params }) => {
+  // authenticate user
 
-  // TODO: Get access token and authenticate user
-  const token = req.headers.get("Authorization");
-
-  if (!token) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Missing access token",
-      },
-      { status: 401 }
-    );
-  }
-
-  const authUser = await authenticateUser(token);
-
-  console.log(authUser);
+  const authUser = await authenticateUser(req.headers);
 
   if (!authUser) {
     return NextResponse.json(
       {
         success: false,
-        message: "Missing access token",
+        message: "Unaunthenticated user",
       },
       { status: 401 }
     );
   }
 
-  try {
-    const deletedMovie = await db.movie.delete({
-      where: {
-        slug,
-        ownerId: authUser.id,
+  const { slug } = await segmentData.params;
+
+  const body = await req.json();
+
+  const validatedData = EditMovieSchema.safeParse(body);
+
+  if (!validatedData.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: validatedData.error,
       },
+      { status: 403 }
+    );
+  }
+  const { coverImage, published, title } = validatedData.data;
+
+  try {
+    const movieData = await db.movie.findUnique({
+      where: { slug, ownerId: authUser.id },
     });
 
-    if (deletedMovie === null) {
+    if (movieData === null) {
       return NextResponse.json(
         {
           success: false,
@@ -87,6 +101,72 @@ export const DELETE = async (req: Request, segmentData: { params: Params }) => {
         { status: 404 }
       );
     }
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          title: title ?? movieData.title,
+          coverImage: coverImage ?? movieData.coverImage,
+          published: published ?? movieData.published,
+        },
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error(err);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal server error",
+      },
+      { status: 500 }
+    );
+  }
+};
+
+export const DELETE = async (req: Request, segmentData: { params: Params }) => {
+  const { slug } = await segmentData.params;
+
+  // authenticate user
+
+  const authUser = await authenticateUser(req.headers);
+
+  if (!authUser) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Unaunthenticated user",
+      },
+      { status: 401 }
+    );
+  }
+
+  try {
+    // Find movie to delete
+    const movieToDelete = await db.movie.findUnique({
+      where: {
+        slug,
+        ownerId: authUser.id,
+      },
+    });
+
+    if (!movieToDelete) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Movie not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    const deletedMovie = await db.movie.delete({
+      where: {
+        id: movieToDelete.id,
+      },
+    });
+
     return NextResponse.json(
       {
         success: true,

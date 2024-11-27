@@ -13,3 +13,11 @@ export const UserSchema = z.object({
     .regex(/[A-Z]/, "Password requires an uppercase letter")
     .regex(/[^\w]/, "Password requires a symbol"),
 });
+
+export const AuthSchema = z.object({
+  email: z
+    .string({ required_error: "User email is required" })
+    .email({ message: "Invalid Email" })
+    .trim(),
+  password: z.string({ required_error: "Password is required" }),
+});

@@ -1,12 +1,23 @@
 import { generateSlug } from "@/utils/createSlug";
 import { db } from "@/utils/db";
-import { CreateMovieSchema } from "@/utils/validators/createMovie";
+import { CreateMovieSchema } from "@/utils/validators/movie.validator";
 import { NextResponse } from "next/server";
+import { authenticateUser } from "../controllers/auth.controller";
 
-export const GET = async () => {
-  console.log("Movies Endpoint hit");
+export const GET = async (req: Request) => {
+  // authenticate user
 
-  // TODO: Get access token and authenticate user
+  const authUser = await authenticateUser(req.headers);
+
+  if (!authUser) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Unaunthenticated user",
+      },
+      { status: 401 }
+    );
+  }
 
   try {
     const moviesData = await db.movie.findMany({});
@@ -30,7 +41,19 @@ export const GET = async () => {
 };
 
 export const POST = async (req: Request) => {
-  console.log("Movies Endpoint hit");
+  // authenticate user
+
+  const authUser = await authenticateUser(req.headers);
+
+  if (!authUser) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Unaunthenticated user",
+      },
+      { status: 401 }
+    );
+  }
   const body = await req.json();
 
   const validatedData = CreateMovieSchema.safeParse(body);
@@ -80,6 +103,7 @@ export const POST = async (req: Request) => {
         published,
         slug,
         title,
+        ownerId: authUser.id,
       },
     });
     return NextResponse.json(

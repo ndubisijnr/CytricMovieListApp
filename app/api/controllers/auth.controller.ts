@@ -1,15 +1,21 @@
 import { decryptToken } from "@/utils/tokenizer";
-import { getUserByEmail } from "./user.controllers";
+import { getUserById } from "./user.controllers";
 
-export const authenticateUser = async (accessToken: string) => {
-  const verifyToken = await decryptToken(accessToken.split(" ")[1]);
+export const authenticateUser = async (headers: Headers) => {
+  const token = headers.get("Authorization")?.split(" ")[1];
+
+  if (!token) {
+    return null;
+  }
+
+  const verifyToken = await decryptToken(token);
 
   if (!verifyToken) {
     return null;
   }
 
-  const { email } = verifyToken as { id: string; email: string };
-  const user = await getUserByEmail(email);
+  const { id } = verifyToken as { id: string; email: string };
+  const user = await getUserById(id);
 
   return user;
 };
