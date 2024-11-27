@@ -5,11 +5,12 @@ import MovieCard from "@/components/card/MovieCard";
 import { fetchMovies } from "@/store/features/movies/moviesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import {useRouter} from "next/navigation";
 
 const HomePage = () => {
-  const [movieResponse, setMovieResponse] = useState({});
 
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { data, error, loading } = useAppSelector((state) => state.movies);
 
@@ -29,9 +30,6 @@ const HomePage = () => {
     </div>
   }
 
-  if (data) {
-    console.log(data);
-  }
 
   const EmptyState = () => {
     return (
@@ -39,7 +37,7 @@ const HomePage = () => {
           <h1 className="header-three lg:header-two mb-10">
             Your movie list is empty
           </h1>
-          <Button text="Add a new movie" classProps="lg:w-[202px]"/>
+          <Button clickEvt={() => router.push('/movies/create',{})} text="Add a new movie" classProps="lg:w-[202px]"/>
         </div>
     );
   };
@@ -124,7 +122,7 @@ const HomePage = () => {
 
   return (
     <>
-      {!movieResponse ? (
+      {!data.length ? (
         <div className="flex min-h-screen items-center">
           <EmptyState />
         </div>
