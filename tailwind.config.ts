@@ -12,6 +12,20 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontStyle:{
+        "header-one":"",
+        "header-two":"",
+        "header-three":"",
+        "header-four":"",
+        "header-five":"",
+        "header-six":"",
+        "body-large":"",
+        "body-regular":"",
+        "body-small":"",
+        "body-extra-small":"",
+        "caption":"",
+
+      }
     },
   },
   plugins: [],

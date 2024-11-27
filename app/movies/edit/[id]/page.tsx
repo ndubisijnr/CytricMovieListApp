@@ -1,4 +1,4 @@
-const EditMoviePage = ({ params }: { params: { id: string } }) => {
+const EditMoviePage = () => {
   return <div>EditMoviePage</div>;
 };
 
