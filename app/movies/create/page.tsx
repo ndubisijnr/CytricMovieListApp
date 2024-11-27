@@ -1,5 +1,7 @@
+'use client'
 const CreateMoviePage = () => {
-  return <div>CreateMoviePage</div>;
+
+  return <div></div>;
 };
 
 export default CreateMoviePage;

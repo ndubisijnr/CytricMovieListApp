@@ -17,9 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className} antialiased relative min-h-screen`}>
-      {children}
-      <Image src={Vector1} alt="vector image 1" className="absolute bottom-0" />
-      <Image src={Vector2} alt="vector image 2" className="absolute bottom-0" />
+      <div className="overflow-scroll mb-20">
+        {children}
+      </div>
+      <div className="relative">
+          <Image src={Vector1} alt="vector image 1" className="absolute bottom-0" />
+          <Image src={Vector2} alt="vector image 2" className="absolute bottom-0" />
+      </div>
       </body>
     </html>
   );

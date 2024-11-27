@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+import tailwindcssFilters from "tailwindcss-filters"
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,21 +12,14 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      fontStyle:{
-        "header-one":"",
-        "header-two":"",
-        "header-three":"",
-        "header-four":"",
-        "header-five":"",
-        "header-six":"",
-        "body-large":"",
-        "body-regular":"",
-        "body-small":"",
-        "body-extra-small":"",
-        "caption":"",
+      fontSize:{
+      },
+      spacing:{
 
       }
     },
   },
-  plugins: [],
+  plugins: [
+    tailwindcssFilters
+  ],
 } satisfies Config;

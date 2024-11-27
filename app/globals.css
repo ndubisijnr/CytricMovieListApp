@@ -12,9 +12,41 @@
 }
 
 @layer utilities {
-  .heading-one {
-    @apply text-7xl leading-[80px] tracking-[0%] font-semibold;
+
+  .header-one{
+    @apply font-semibold text-[64px] leading-[80px] tracking-[0%];
   }
+  .header-two{
+    @apply font-semibold text-[48px] leading-[56px] tracking-[0%];
+  }
+  .header-three{
+    @apply font-semibold text-[32px] leading-[40px] tracking-[0%];
+  }
+  .header-four{
+    @apply font-semibold text-[24px] leading-[32px] tracking-[0%];
+  }
+  .header-five{
+    @apply font-semibold text-[20px] leading-[24px] tracking-[0%];
+  }
+  .header-six{
+    @apply font-semibold text-[16px] leading-[24px] tracking-[0%];
+  }
+  .body-large{
+    @apply font-semibold text-[20px] leading-[32px] tracking-[0%];
+  }
+  .body-regular{
+    @apply font-semibold text-[16px] leading-[24px] tracking-[0%];
+  }
+  .body-small{
+    @apply font-semibold text-[14px] leading-[24px] tracking-[0%];
+  }
+  .body-extra-small{
+    @apply font-semibold text-[12px] leading-[24px] tracking-[0%];
+  }
+  .caption{
+    @apply font-semibold text-[14px] leading-[16px] tracking-[0%];
+  }
+
 }
 
 body {
