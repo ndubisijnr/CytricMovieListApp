@@ -2,13 +2,16 @@
 import { registerUser } from "@/store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import { setCookies } from "@/utils/cookies";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Button from "../button/Button";
 import Input from "../input/Input";
 
 const SignUpForm = () => {
   const dispatch = useAppDispatch();
-  const { loading, error, user } = useAppSelector((state) => state.auth); // Select loading and error from auth state
+  const { loading, error } = useAppSelector((state) => state.auth); // Select loading and error from auth state
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
@@ -37,8 +40,7 @@ const SignUpForm = () => {
       const res = await dispatch(registerUser(formData)).unwrap();
       await setCookies(res.accessToken);
 
-      // Handle successful login (e.g., redirect to a dashboard or home page)
-      console.log(res.message);
+      router.refresh();
     } catch (err) {
       // Handle error if login fails
       console.error("User creation failed:", err);
@@ -80,6 +82,7 @@ const SignUpForm = () => {
           {/* Display error message from Redux store */}
           <div className="flex items-center gap-2 justify-center mb-5">
             <input
+              aria-label="Remember me"
               id="remember-me"
               type="checkbox"
               className="w-[18px] h-[17px] bg-[#224957] rounded-[5px]"

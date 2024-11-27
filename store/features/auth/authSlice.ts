@@ -43,7 +43,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { email: string; password: string }) => {
-    const response = await fetch("/api/auth/login", {
+    const response = await fetch("/api/auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

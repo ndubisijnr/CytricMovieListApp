@@ -20,11 +20,9 @@ export function middleware(req: NextRequest) {
   if (isAuthRoute) {
     if (isAuthenticated) {
       // Redirect authenticated users to the referer or home page
-      const referer = req.headers.get("referer") || "/";
-      if (referer !== nextUrl.pathname) {
-        return NextResponse.redirect(new URL(referer, req.nextUrl.origin));
-      }
-      return NextResponse.redirect(new URL("/", req.nextUrl.origin));
+      // Redirect authenticated users to the callback URL or home
+      const callbackUrl = req.nextUrl.searchParams.get("callback") || "/";
+      return NextResponse.redirect(new URL(callbackUrl, req.nextUrl.origin));
     }
     return NextResponse.next(); // Allow unauthenticated users access to signin
   }
