@@ -21,7 +21,7 @@ export default function RootLayout({
         className={`${montserrat.className} antialiased relative min-h-screen`}
       >
         <StoreProvider>
-          <div className="overflow-scroll mb-20">{children}</div>
+          <div className="overflow-scroll mb-20 min-h-screen">{children}</div>
           <div className="relative">
             <Image
               src={Vector1}
