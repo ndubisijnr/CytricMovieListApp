@@ -57,6 +57,10 @@ export const POST = async (req: Request) => {
       {
         success: true,
         accessToken,
+        user: {
+          id: userExist.id,
+          email: userExist.email,
+        },
         message: "User logged in successfully",
       },
       { status: 200 }
