@@ -1,27 +1,47 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-    // Define routes that require authentication
-    const protectedRoutes = ["/create", "/edit"];
+  const { nextUrl } = req;
 
-    // Check if the current route is protected
-    const { pathname } = req.nextUrl;
-    const isProtectedRoute = protectedRoutes.some((route) =>
-        pathname.startsWith(route)
-    );
+  // Define routes
+  const authRoutes = ["/auth/signin"];
+  const protectedRoutes = ["/movies/create", "/movies/edit"];
 
-    if (isProtectedRoute) {
-        // Simulate checking for authentication
-        const isAuthenticated = req.cookies.get("authToken");
+  // Check if the user is authenticated by verifying the access token
+  const isAuthenticated = req.cookies.get("accessToken");
 
-        // If not authenticated, redirect to the login page
-        if (!isAuthenticated) {
-            const loginUrl = new URL("/signin", req.url);
-            return NextResponse.redirect(loginUrl);
-        }
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    nextUrl.pathname.startsWith(route)
+  );
+
+  // Handle authentication routes
+  if (isAuthRoute) {
+    if (isAuthenticated) {
+      // Redirect authenticated users to the referer or home page
+      const referer = req.headers.get("referer") || "/";
+      if (referer !== nextUrl.pathname) {
+        return NextResponse.redirect(new URL(referer, req.nextUrl.origin));
+      }
+      return NextResponse.redirect(new URL("/", req.nextUrl.origin));
     }
+    return NextResponse.next(); // Allow unauthenticated users access to signin
+  }
 
-    // Continue to the requested page
-    return NextResponse.next();
+  // Handle protected routes
+  if (isProtectedRoute && !isAuthenticated) {
+    const loginUrl = new URL("/auth/signin", req.nextUrl.origin);
+    // Set the callback parameter to redirect the user back to the attempted page after login
+    loginUrl.searchParams.set("callback", nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Proceed with request if no authentication issues
+  return NextResponse.next();
 }
+
+// Configuration for matching routes
+export const config = {
+  matcher: ["/movies/:path*", "/auth/signin"], // Apply middleware to specific routes
+};

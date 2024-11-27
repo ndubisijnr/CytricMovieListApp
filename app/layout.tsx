@@ -1,3 +1,4 @@
+import StoreProvider from "@/components/provider/StoreProvider";
 import { montserrat } from "@/font";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -16,14 +17,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.className} antialiased relative min-h-screen`}>
-      <div className="overflow-scroll mb-20">
-        {children}
-      </div>
-      <div className="relative">
-          <Image src={Vector1} alt="vector image 1" className="absolute bottom-0" />
-          <Image src={Vector2} alt="vector image 2" className="absolute bottom-0" />
-      </div>
+      <body
+        className={`${montserrat.className} antialiased relative min-h-screen`}
+      >
+        <StoreProvider>
+          <div className="overflow-scroll mb-20">{children}</div>
+          <div className="relative">
+            <Image
+              src={Vector1}
+              alt="vector image 1"
+              className="absolute bottom-0"
+            />
+            <Image
+              src={Vector2}
+              alt="vector image 2"
+              className="absolute bottom-0"
+            />
+          </div>
+        </StoreProvider>
       </body>
     </html>
   );

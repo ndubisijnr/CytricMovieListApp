@@ -4,21 +4,7 @@ import { CreateMovieSchema } from "@/utils/validators/movie.validator";
 import { NextResponse } from "next/server";
 import { authenticateUser } from "../controllers/auth.controller";
 
-export const GET = async (req: Request) => {
-  // authenticate user
-
-  const authUser = await authenticateUser(req.headers);
-
-  if (!authUser) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Unaunthenticated user",
-      },
-      { status: 401 }
-    );
-  }
-
+export const GET = async () => {
   try {
     const moviesData = await db.movie.findMany({});
     return NextResponse.json(
