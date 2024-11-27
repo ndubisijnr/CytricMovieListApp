@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #ffffff;
+  --primary: #2bd17e;
+  --error: #eb5757;
+  --background: #093545;
+  --input: #224957;
+  --card: #092c39;
+}
+
+@layer utilities {
+  .heading-one {
+    @apply text-7xl leading-[80px] tracking-[0%] font-semibold;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
