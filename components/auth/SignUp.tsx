@@ -41,7 +41,7 @@ const SignUpForm = () => {
       console.log("Login successful!");
     } catch (err) {
       // Handle error if login fails
-      console.error("Login failed:", err);
+      console.log("Login failed:", err);
     }
   };
 
