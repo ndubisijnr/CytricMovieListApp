@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the initial state for authentication
+// Define the initial state for authentication and user creation
 interface AuthState {
   isAuthenticated: boolean;
   user: { id: string; email: string } | null;
@@ -15,11 +15,35 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Async thunk for logging in a user
+// Async thunk for registering a new user
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (userData: { email: string; password: string }) => {
+    const response = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      throw new Error("User registration failed");
+    }
+
+    const data = await response.json(); // This should return user data and a token
+
+    localStorage.setItem("accessToken", data.accessToken);
+
+    return data;
+  }
+);
+
+// Async thunk for logging in a user (can be reused as in previous example)
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { email: string; password: string }) => {
-    const response = await fetch("/api/auth", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,12 +83,35 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Handle login pending
+      // Handle register user
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        registerUser.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            user: { id: string; email: string };
+            accessToken: string;
+          }>
+        ) => {
+          state.loading = false;
+          state.isAuthenticated = true;
+          state.user = action.payload.user;
+          localStorage.setItem("accessToken", action.payload.accessToken); // Store the token
+        }
+      )
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Registration failed";
+      })
+      // Handle login
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      // Handle login success
       .addCase(
         loginUser.fulfilled,
         (
@@ -80,7 +127,6 @@ const authSlice = createSlice({
           localStorage.setItem("accessToken", action.payload.accessToken); // Store the token
         }
       )
-      // Handle login failure
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Login failed";

@@ -24,12 +24,12 @@ function Input({
   name,
 }: InputProps) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full mb-5">
       <input
         type={type}
         id={inputId}
         name={name} // Name is important for form handling
-        className={`peer w-full h-[45px] mb-5 p-3 bg-[#224957] border ${
+        className={`peer w-full h-[45px]  p-3 bg-[#224957] border ${
           error ? "border-red-500" : "border-[#224957]"
         } rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-transparent placeholder-transparent ${classProps}`}
         placeholder={label} // Placeholder required for floating effect

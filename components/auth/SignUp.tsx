@@ -1,5 +1,5 @@
 "use client";
-import { loginUser } from "@/store/features/auth/authSlice";
+import { registerUser } from "@/store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import { setCookies } from "@/utils/cookies";
 import { useState } from "react";
@@ -34,14 +34,14 @@ const SignUpForm = () => {
 
     try {
       // Dispatch the loginUser async action to handle the login
-      const res = await dispatch(loginUser(formData)).unwrap();
+      const res = await dispatch(registerUser(formData)).unwrap();
       await setCookies(res.accessToken);
 
       // Handle successful login (e.g., redirect to a dashboard or home page)
-      console.log("Login successful!");
+      console.log(res.message);
     } catch (err) {
       // Handle error if login fails
-      console.error("Login failed:", err);
+      console.error("User creation failed:", err);
     }
   };
 
@@ -54,7 +54,7 @@ const SignUpForm = () => {
     <div className="flex items-center justify-center min-h-screen min-w-full p-5 lg:p-0 md:p-0">
       <div className="lg:w-[300px] md:w-[300px] w-full">
         <h1 className="header-two lg:header-one font-[600] text-center mb-10">
-          Sign in
+          Sign up
         </h1>
 
         <form onSubmit={handleSubmit}>
@@ -86,7 +86,10 @@ const SignUpForm = () => {
             />
             <span className="body-small text-white">Remember me</span>
           </div>
-          <Button text={loading ? "Loading..." : "Login"} classProps="w-full" />
+          <Button
+            text={loading ? "Loading..." : "Sign up"}
+            classProps="w-full"
+          />
         </form>
       </div>
     </div>

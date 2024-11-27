@@ -1,9 +1,9 @@
-import SignInForm from "@/components/auth/SignIn";
+import SignUpForm from "@/components/auth/SignUp";
 
 const SignInPage = () => {
   return (
     <div>
-      <SignInForm />
+      <SignUpForm />
     </div>
   );
 };

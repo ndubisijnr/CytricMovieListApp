@@ -52,6 +52,10 @@ export const POST = async (req: Request) => {
       {
         success: true,
         accessToken,
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+        },
         message: "User created successfully",
       },
       { status: 200 }
