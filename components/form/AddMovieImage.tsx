@@ -38,7 +38,7 @@ const AddMovieImage = () => {
   return (
     <>
       {image ? (
-        <div className="relative w-[473px] h-[504px] border rounded-md border-neutral-500 group overflow-hidden">
+        <div className="relative w-full lg:w-[473px] h-[504px] border rounded-md border-neutral-500 group overflow-hidden">
           <Image src={image} fill alt="Cover Image" className="object-cover" />
           <button
             type="button"
@@ -57,7 +57,7 @@ const AddMovieImage = () => {
           accept={{ "image/*": [] }}
         >
           {({ getRootProps, getInputProps }) => (
-            <section className="border border-dashed rounded-md w-[473px] h-[504px]">
+            <section className="border border-dashed rounded-md w-full lg:w-[473px] h-[504px]">
               <div
                 {...getRootProps()}
                 className="p-5 cursor-pointer flex items-center justify-center h-full w-full"
