@@ -2,7 +2,6 @@
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import React, { useState } from "react";
-import {isFunction} from "node:util";
 
 // Define props for the input, including a `name` prop
 interface InputProps {

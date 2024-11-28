@@ -6,7 +6,7 @@ interface MovieProps {
   coverImage: string;
   slug: string;
 }
-function MovieCard({ title, published, coverImage, slug }: MovieProps) {
+function MovieCard({ title, published, coverImage }: MovieProps) {
   return (
     <div className="relative group">
       <ActionCard slug={title} />

@@ -3,7 +3,6 @@ import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
-import {useSelector} from "react-redux";
 
 const AddMovieImage = () => {
   const [image, setImage] = useState<string | undefined>();

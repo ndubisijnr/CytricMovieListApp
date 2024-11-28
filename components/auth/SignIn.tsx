@@ -14,7 +14,7 @@ const MySwal = withReactContent(Swal)
 
 const SignInForm = () => {
   const dispatch = useAppDispatch();
-  const { loading, error, user } = useAppSelector((state) => state.auth); // Select loading and error from auth state
+  const { loading, error } = useAppSelector((state) => state.auth); // Select loading and error from auth state
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });

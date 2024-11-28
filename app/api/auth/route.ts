@@ -24,7 +24,7 @@ export const POST = async (req: Request) => {
 
   try {
       // Check if user with email exist
-    const userExist = await getUserByEmail(email) || null;
+    const userExist = await getUserByEmail(email) || undefined;
 
     if(userExist) {
         const isValidPassword = await validatePassword({
@@ -89,7 +89,7 @@ export const POST = async (req: Request) => {
             { status: 200 }
         );
     }
-    
+
   } catch (err) {
     console.log(err);
 

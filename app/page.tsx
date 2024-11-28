@@ -26,6 +26,8 @@ const HomePage = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 
+  console.log(currentItems);
+
   useEffect(() => {
     dispatch(fetchMovies());
   }, [dispatch]);
