@@ -11,8 +11,8 @@ const EditMoviePage = () => {
     <div className="flex items-start w-full pt-20 gap-20">
       <AddMovieImage/>
       <div className="w-auto">
-        <Input type={'text'} inputId={'edit-title'} label={"Title"} classProps="w-[356px] h-[45px]"/>
-        <Input type={'text'} inputId={'edit-title'} label={"Publishing year"} classProps="w-[261px] h-[45px]"/>
+        <Input value={''} onChange={()=> {}} name={'edit-title'} type={'text'} inputId={'edit-title'} label={"Title"} classProps="w-[356px] h-[45px]" />
+        <Input value={''} onChange={()=> {}} name={'edit-publishing'} type={'text'} inputId={'edit-publishing'} label={"Publishing year"} classProps="w-[261px] h-[45px]"/>
         <div className="w-auto flex items-center w-full gap-5 mt-10">
           <Button text={'Cancel'} classProps="bg-transparent border-2"/>
           <Button text={'Submit'} classProps=""/>
