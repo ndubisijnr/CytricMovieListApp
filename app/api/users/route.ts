@@ -1,70 +1,64 @@
-import { db } from "@/utils/db";
 import { getPasswordHash } from "@/utils/password";
 import { generateToken } from "@/utils/tokenizer";
 import { UserSchema } from "@/utils/validators/user.validator";
-import { getUserByEmail } from "../controllers/user.controllers";
+import {createUser} from "@/utils/createUser";
 
 export const POST = async (req: Request) => {
-  const body = await req.json();
+    try {
+        // Parse and validate request body
+        const body = await req.json();
+        const validatedData = UserSchema.safeParse(body);
 
-  const validatedData = UserSchema.safeParse(body);
+        if (!validatedData.success) {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    message: validatedData.error.issues.map((issue) => issue.message).join(", "),
+                }),
+                { status: 400 }
+            );
+        }
 
-  if (!validatedData.success) {
-    return Response.json(
-      {
-        success: false,
-        message: validatedData.error,
-      },
-      { status: 403 }
-    );
-  }
+        const { email, password } = validatedData.data;
 
-  const { email, password } = validatedData.data;
 
-  try {
-    // Check if user with email exist
-    const userExist = await getUserByEmail(email);
-    if (userExist) {
-      return Response.json(
-        {
-          success: false,
-          message: "User exist",
-        },
-        { status: 403 }
-      );
+        // Hash the password
+        const passwordHash = await getPasswordHash(password);
+
+        // Create new user
+
+        const newUser = await createUser({email, passwordHash})
+
+        // Generate access token
+        const accessToken = await generateToken({
+            id: newUser.id,
+            email: newUser.email,
+        });
+
+        // Successful response
+        return new Response(
+            JSON.stringify({
+                success: true,
+                accessToken,
+                user: {
+                    id: newUser.id,
+                    email: newUser.email,
+                },
+                message: "New user created successfully.",
+                code: "00",
+            }),
+            { status: 201 }
+        );
+    } catch (error) {
+        console.error("Error in user creation:", error);
+
+        // Internal server error response
+        return new Response(
+            JSON.stringify({
+                success: false,
+                message: "Internal server error. Please try again later.",
+            }),
+            { status: 500 }
+        );
     }
-
-    const passwordHash = await getPasswordHash(password);
-
-    const newUser = await db.user.create({
-      data: {
-        email,
-        password: passwordHash,
-      },
-    });
-
-    const accessToken = await generateToken({
-      id: newUser.id,
-      email: newUser.email,
-    });
-
-    return Response.json(
-      {
-        success: true,
-        accessToken,
-        message: "User created successfully",
-      },
-      { status: 200 }
-    );
-  } catch (err) {
-    console.log(err);
-
-    return Response.json(
-      {
-        success: false,
-        message: "Internal server error",
-      },
-      { status: 500 }
-    );
-  }
 };

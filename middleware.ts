@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
   const { nextUrl } = req;
 
   // Define routes
-  const authRoutes = ["/auth/signin"];
+  const authRoutes = ["/auth/signin", "/auth/signup"];
   const protectedRoutes = ["/movies/create", "/movies/edit"];
 
   // Check if the user is authenticated by verifying the access token
@@ -43,5 +43,5 @@ export function middleware(req: NextRequest) {
 
 // Configuration for matching routes
 export const config = {
-  matcher: ["/movies/:path*", "/auth/signin"], // Apply middleware to specific routes
+  matcher: ["/movies/:path*", "/auth/signin", "/auth/signup"], // Apply middleware to specific routes
 };

@@ -5,14 +5,28 @@ import MovieCard from "@/components/card/MovieCard";
 import { fetchMovies } from "@/store/features/movies/moviesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
+import Pagination from "@/components/pagination/Pagination";
+import {logoutUser} from "@/store/features/auth/authSlice";
+import { deleteCookie, getCookie } from 'cookies-next';
+import {removeCookies} from "@/utils/cookies";
+
+
+
 
 const HomePage = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { data, error, loading } = useAppSelector((state) => state.movies);
+  const items = Array.from({ length: data.length }, (_, i) => `Item ${i + 1}`); // Example items
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate the items to display on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -28,6 +42,12 @@ const HomePage = () => {
         <p className="text-white text-lg">Loading...</p>
       </div>
     </div>
+  }
+
+  async function logout() {
+    await removeCookies()
+    router.push('/auth/signin');
+
   }
 
 
@@ -53,6 +73,8 @@ const HomePage = () => {
               width={24}
               height={24}
               alt="add movie icon"
+              className="cursor-pointer"
+              onClick={() => router.push('/movies/create')}
             />
           </div>
           <div className="flex items-center gap-5 justify-center">
@@ -61,7 +83,10 @@ const HomePage = () => {
               src="/logout.png"
               width={24}
               height={24}
+              className="cursor-pointer"
               alt="add movie icon"
+              onClick={logout}
+
             />
           </div>
         </div>
@@ -116,13 +141,18 @@ const HomePage = () => {
             published={2024}
           />
         </div>
+        <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={items.length}
+            onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     );
   };
 
   return (
     <>
-      {!data.length ? (
+      {data.length ? (
         <div className="flex min-h-screen items-center">
           <EmptyState />
         </div>

@@ -7,3 +7,10 @@ export async function setCookies(token: string) {
 
   cookieStore.set("accessToken", token);
 }
+
+export async function removeCookies() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("accessToken");
+}
+

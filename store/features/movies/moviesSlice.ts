@@ -6,12 +6,14 @@ interface MoviesState {
   data: Movie[];
   loading: boolean;
   error: string | null;
+  imageUrl:string | null;
 }
 
 const initialState: MoviesState = {
   data: [],
   loading: false,
   error: null,
+  imageUrl:null
 };
 
 // Async thunk for fetching movies
@@ -24,9 +26,28 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
       throw new Error("Failed to fetch movies");
     }
 
-    return (await response.json()) as Movie[];
+    return (
+        await response.json()) as Movie[];
   }
 );
+
+// Async thunk for creating a movie
+export const createMovie = createAsyncThunk<Movie, {updates:Partial<Movie>}>("movies/createMovie", async ({updates}) => {
+    const response = await fetch(`/api/movies/create`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to edit movie");
+    }
+
+    return (await response.json()) as Movie;
+});
+
 
 // Async thunk for editing a movie
 export const editMovie = createAsyncThunk<
