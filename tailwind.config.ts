@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import tailwindcssFilters from "tailwindcss-filters";
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -19,7 +18,5 @@ export default {
       }
     },
   },
-  plugins: [
-    tailwindcssFilters
-  ],
+  plugins: [],
 } satisfies Config;

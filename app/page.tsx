@@ -8,8 +8,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
 import Pagination from "@/components/pagination/Pagination";
-import {logoutUser} from "@/store/features/auth/authSlice";
-import { deleteCookie, getCookie } from 'cookies-next';
 import {removeCookies} from "@/utils/cookies";
 
 
@@ -19,7 +17,7 @@ const HomePage = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { data, error, loading } = useAppSelector((state) => state.movies);
+  const { data, loading } = useAppSelector((state) => state.movies);
   const items = Array.from({ length: data.length }, (_, i) => `Item ${i + 1}`); // Example items
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -49,8 +47,6 @@ const HomePage = () => {
     router.push('/auth/signin');
 
   }
-
-
   const EmptyState = () => {
     return (
         <div className="lg:w-[591px] mx-auto text-center lg:p-0 p-5">
@@ -152,7 +148,7 @@ const HomePage = () => {
 
   return (
     <>
-      {data.length ? (
+      {!data.length ? (
         <div className="flex min-h-screen items-center">
           <EmptyState />
         </div>
