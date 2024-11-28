@@ -5,7 +5,6 @@ export const authenticateUser = async (headers: Headers) => {
   const token = headers.get("Authorization")?.split(" ")[1]; //gets authorization from request header
 
   // checks if token is in header
-
   if (!token) {
     return null;
   }
