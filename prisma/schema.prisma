@@ -28,7 +28,7 @@ model Movie {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   slug      String @unique
-  published Int
+  published String
   poster    String
 
   ownerId String @db.ObjectId

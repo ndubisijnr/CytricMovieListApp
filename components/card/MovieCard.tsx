@@ -2,7 +2,7 @@ import ActionCard from "@/components/card/ActionCard";
 import Image from "next/image";
 interface MovieProps {
   title: string;
-  published: number;
+  published: string;
   coverImage: string;
   slug: string;
 }

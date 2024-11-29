@@ -13,7 +13,7 @@ export const GET = async (req: Request, segmentData: { params: Params }) => {
     return NextResponse.json(
       {
         success: false,
-        message: "Unaunthenticated user",
+        message: "Unauthenticated user",
       },
       { status: 401 }
     );
@@ -136,7 +136,7 @@ export const DELETE = async (req: Request, segmentData: { params: Params }) => {
     return NextResponse.json(
       {
         success: false,
-        message: "Unaunthenticated user",
+        message: "Unauthenticated user",
       },
       { status: 401 }
     );
