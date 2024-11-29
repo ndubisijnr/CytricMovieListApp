@@ -85,7 +85,7 @@ export const PATCH = async (req: Request, segmentData: { params: Params }) => {
       { status: 403 }
     );
   }
-  const { coverImage, published, title } = validatedData.data;
+  const { poster, published, title } = validatedData.data;
 
   try {
     const movieData = await db.movie.findUnique({
@@ -106,7 +106,7 @@ export const PATCH = async (req: Request, segmentData: { params: Params }) => {
         success: true,
         data: {
           title: title ?? movieData.title,
-          coverImage: coverImage ?? movieData.coverImage,
+          poster: poster ?? movieData.poster,
           published: published ?? movieData.published,
         },
       },
