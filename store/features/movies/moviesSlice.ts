@@ -34,23 +34,39 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
 );
 
 // Async thunk for creating a movie
-export const createMovie = createAsyncThunk<Movie, {updates:Partial<Movie>}>("movies/createMovie", async ({updates}) => {
-    const response = await fetch(`/api/movies`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(updates),
-    });
+export const createMovie = createAsyncThunk<Movie, { updates: Partial<Movie> }>(
+    "movies/createMovie",
+    async ({ updates }) => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error("Access token is missing");
+                throw new Error("Unauthorized: Access token not found");
+            }
 
-    if (!response.ok) {
+            const response = await fetch(`/api/movies`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updates),
+            });
 
-        console.log(response);
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("API error:", errorText);
+                throw new Error(`Failed to create movie: ${response.statusText}`);
+            }
+
+            return (await response.json()) as Movie;
+        } catch (error) {
+            console.error("Error in createMovie thunk:", error);
+            throw error;
+        }
     }
+);
 
-    return (await response.json()) as Movie;
-});
 
 
 // Async thunk for editing a movie

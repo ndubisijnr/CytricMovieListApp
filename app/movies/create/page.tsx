@@ -45,7 +45,7 @@ const CreateMoviePage = () => {
     try {
       // Update poster value in formData
       const updatedFormData = { ...formData, poster: value };
-      console.log(updatedFormData)
+      console.log("json obj:", updatedFormData)
 
       // Dispatch action
       const result = await dispatch(createMovie(updatedFormData)).unwrap();
