@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 
-const AddMovieImage = () => {
+const AddMovieImage = ({ setValue }: { setValue: (value: string) => void }) => {
   const [image, setImage] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,59 +22,59 @@ const AddMovieImage = () => {
 
     setIsLoading(true);
     axios
-      .post(url, formData)
-      .then((response) => {
-        setImage(response.data.secure_url); // Ensure HTTPS
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Upload failed", error);
-        setIsLoading(false);
-      });
+        .post(url, formData)
+        .then((response) => {
+          setImage(response.data.secure_url); // Ensure HTTPS
+          setValue(response.data.secure_url);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Upload failed", error);
+          setIsLoading(false);
+        });
   };
 
   const handleRemoveImg = () => setImage(undefined);
 
   return (
-    <>
-      {image ? (
-        <div className="relative w-full lg:w-[473px] h-[504px] border rounded-md border-neutral-500 group overflow-hidden">
-          <Image src={image} fill alt="Cover Image" className="object-cover" />
-          <button
-            type="button"
-            aria-label="Remove image"
-            className="bg-red-500 absolute w-6 h-6 rounded-full flex items-center justify-center top-2 right-2 opacity-0 group-hover:opacity-100"
-            onClick={handleRemoveImg}
-          >
-            <p className="text-sm font-medium">X</p>
-          </button>
-        </div>
-      ) : (
-        <Dropzone
-          onDrop={handleDrop}
-          maxFiles={1}
-          maxSize={3145728} // 3MB
-          accept={{ "image/*": [] }}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <section className="border border-dashed rounded-md w-full lg:w-[473px] h-[504px]">
-              <div
-                {...getRootProps()}
-                className="p-5 cursor-pointer flex items-center justify-center h-full w-full"
+      <>
+        {image ? (
+            <div className="relative w-full lg:w-[473px] h-[504px] border rounded-md border-neutral-500 group overflow-hidden">
+              <Image src={image} fill alt="Cover Image" className="object-cover" />
+              <button
+                  type="button"
+                  aria-label="Remove image"
+                  className="bg-red-500 absolute w-6 h-6 rounded-full flex items-center justify-center top-2 right-2 opacity-0 group-hover:opacity-100"
+                  onClick={handleRemoveImg}
               >
-                <input {...getInputProps()} multiple={false} />
-                <p className="text-neutral-400 text-3xl">
-                  {isLoading ? "Uploading..." : "+"}
-                </p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      )}
-    </>
+                <p className="text-sm font-medium">X</p>
+              </button>
+            </div>
+        ) : (
+            <Dropzone
+                onDrop={handleDrop}
+                maxFiles={1}
+                maxSize={3145728} // 3MB
+                accept={{ "image/*": [] }}
+            >
+              {({ getRootProps, getInputProps }) => (
+                  <section className="border border-dashed rounded-md w-full lg:w-[473px] h-[504px]">
+                    <div
+                        {...getRootProps()}
+                        className="p-5 cursor-pointer flex items-center justify-center h-full w-full"
+                    >
+                      <input {...getInputProps()} multiple={false} />
+                      <p className="text-neutral-400 text-3xl">
+                        {isLoading ? "Uploading..." : "+"}
+                      </p>
+                    </div>
+                  </section>
+              )}
+            </Dropzone>
+        )}
+      </>
   );
+
 };
 
 export default AddMovieImage;
-
-

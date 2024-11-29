@@ -26,10 +26,8 @@ function Input({
   error,
   name,
 }: InputProps) {
+
     const [visible, setVisible] = useState(false);
-    // function  togglePasswordVisibility() {
-    //   setVisible(!visible);
-    // }
 
     return (
     <div className="relative w-full mb-5">

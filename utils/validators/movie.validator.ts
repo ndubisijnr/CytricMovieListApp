@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CreateMovieSchema = z.object({
   title: z.string({ required_error: "Movie title is required" }),
   published: z.number({ required_error: "Date published is required" }),
-  coverImage: z
+  poster: z
     .string({ required_error: "Cover Image is requires" })
     .url({ message: "Invalid cover image url" }),
 });
@@ -16,7 +16,7 @@ export const EditMovieSchema = z.object({
   published: z
     .number({ required_error: "Date published is required" })
     .optional(),
-  coverImage: z
+  poster: z
     .string({ required_error: "Cover Image is requires" })
     .url({ message: "Invalid cover image url" })
     .optional(),

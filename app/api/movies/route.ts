@@ -35,12 +35,16 @@ export const POST = async (req: Request) => {
     return NextResponse.json(
       {
         success: false,
-        message: "Unaunthenticated user",
+        message: "Unauthenticated user",
+        code:"01"
       },
-      { status: 401 }
+      { status: 200 }
     );
   }
-  const body = await req.json();
+    console.log('body', req)
+
+    const body = await req.json();
+
 
   const validatedData = CreateMovieSchema.safeParse(body);
 
@@ -49,11 +53,12 @@ export const POST = async (req: Request) => {
       {
         success: false,
         message: validatedData.error,
+        code:"403"
       },
-      { status: 403 }
+      { status: 200 }
     );
   }
-  const { coverImage, published, title } = validatedData.data;
+  const { poster, published, title } = validatedData.data;
 
   // Check if movie exist
   const movieExist = await db.movie.findFirst({
@@ -71,8 +76,9 @@ export const POST = async (req: Request) => {
       {
         success: false,
         message: "Movie already exist",
+        code:"403"
       },
-      { status: 403 }
+      { status: 200 }
     );
   }
 
@@ -85,7 +91,7 @@ export const POST = async (req: Request) => {
   try {
     const newMovie = await db.movie.create({
       data: {
-        coverImage,
+        poster,
         published,
         slug,
         title,

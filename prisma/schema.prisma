@@ -25,11 +25,11 @@ model User {
 }
 
 model Movie {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  slug       String @unique
-  published  Int
-  coverImage String
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  slug      String @unique
+  published Int
+  poster    String
 
   ownerId String @db.ObjectId
   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)

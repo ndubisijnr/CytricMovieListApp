@@ -2,7 +2,7 @@
 import { loginUser } from "@/store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import { setCookies } from "@/utils/cookies";
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "../button/Button";
 import Input from "../input/Input";
 import Swal from 'sweetalert2'

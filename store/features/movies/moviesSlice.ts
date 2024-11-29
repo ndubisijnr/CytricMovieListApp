@@ -1,5 +1,6 @@
 import { Movie } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Define the initial state
 interface MoviesState {
@@ -15,6 +16,7 @@ const initialState: MoviesState = {
   error: null,
   imageUrl:null
 };
+
 
 // Async thunk for fetching movies
 export const fetchMovies = createAsyncThunk<Movie[]>(
@@ -33,16 +35,18 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
 
 // Async thunk for creating a movie
 export const createMovie = createAsyncThunk<Movie, {updates:Partial<Movie>}>("movies/createMovie", async ({updates}) => {
-    const response = await fetch(`/api/movies/create`, {
+    const response = await fetch(`/api/movies`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-        throw new Error("Failed to edit movie");
+
+        console.log(response);
     }
 
     return (await response.json()) as Movie;
@@ -91,27 +95,26 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMovies.pending, (state) => {
+        // Handling createMovie
+        .addCase(fetchMovies.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchMovies.fulfilled,
-        (state, action: PayloadAction<Movie[]>) => {
+        .addCase(fetchMovies.fulfilled, (state, action: PayloadAction<Movie[]>) => {
           state.loading = false;
           state.data = action.payload;
-        }
-      )
-      .addCase(fetchMovies.rejected, (state, action) => {
+        })
+        .addCase(fetchMovies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
       })
-      // Handling editMovie
-      .addCase(editMovie.pending, (state) => {
+
+        // Handling editMovie
+       .addCase(editMovie.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(editMovie.fulfilled, (state, action: PayloadAction<Movie>) => {
+       .addCase(editMovie.fulfilled, (state, action: PayloadAction<Movie>) => {
         state.loading = false;
         const index = state.data.findIndex(
           (movie) => movie.id === action.payload.id
@@ -120,25 +123,23 @@ const moviesSlice = createSlice({
           state.data[index] = action.payload; // Update the movie data
         }
       })
-      .addCase(editMovie.rejected, (state, action) => {
+       .addCase(editMovie.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to edit movie";
       })
-      // Handling deleteMovie
-      .addCase(deleteMovie.pending, (state) => {
+
+        // Handling deleteMovie
+       .addCase(deleteMovie.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        deleteMovie.fulfilled,
-        (state, action: PayloadAction<string>) => {
+       .addCase(deleteMovie.fulfilled, (state, action: PayloadAction<string>) => {
           state.loading = false;
           state.data = state.data.filter(
             (movie) => movie.id !== action.payload
           );
-        }
-      )
-      .addCase(deleteMovie.rejected, (state, action) => {
+        })
+       .addCase(deleteMovie.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to delete movie";
       });
