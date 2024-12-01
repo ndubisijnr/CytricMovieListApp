@@ -1,9 +1,8 @@
 export const generateSlug = ({
   title,
-  year,
+
 }: {
   title: string;
-  year: string;
 }) => {
   const titleSlug = title
     .toLowerCase() // Convert to lowercase
@@ -12,5 +11,5 @@ export const generateSlug = ({
     .replace(/\s+/g, "-") // Replace spaces with hyphens
     .replace(/-+/g, "-"); // Replace multiple hyphens with a single hyphen
 
-  return `${titleSlug}-${year}`;
+  return `${titleSlug}`;
 };

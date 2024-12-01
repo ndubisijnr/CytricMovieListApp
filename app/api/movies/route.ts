@@ -83,7 +83,7 @@ export const POST = async (req: Request) => {
   }
 
   // GenerateSlug
-  const slug = generateSlug({ title, year: published.toString() });
+  const slug = generateSlug({ title});
 
   // TODO: Get access token and authenticate user
 

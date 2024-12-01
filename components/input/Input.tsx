@@ -57,7 +57,7 @@ function Input({
 
       <label
         htmlFor={inputId}
-        className="absolute left-3 top-0 text-white text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-white peer-focus:top-0 peer-focus:text-xs peer-focus:text-white"
+        className="absolute left-3 top-0 text-white text-sm transition-all peer-placeholder-shown:top-3 peer-focus:bg-[#224957] peer-placeholder-shown:text-base peer-placeholder-shown:text-white peer-focus:top-[-10px] peer-focus:text-xs peer-focus:text-white"
       >
         {label}
       </label>

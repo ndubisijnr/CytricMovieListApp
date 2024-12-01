@@ -1,12 +1,24 @@
-import { Movie } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import {Movie} from "@prisma/client";
 // Define the initial state
 interface MoviesState {
   data: Movie[];
   loading: boolean;
   error: string | null;
   imageUrl: string | null;
+}
+
+type UpdateMovie = {
+  id: string;
+  title: string,
+  published: string,
+  poster: string
+}
+
+type createMovie = {
+  title: string,
+  published: string,
+  poster: string
 }
 
 const initialState: MoviesState = {
@@ -31,7 +43,7 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
 );
 
 // Async thunk for creating a movie
-export const createMovie = createAsyncThunk<Movie, { updates: Partial<Movie> }>(
+export const createMovie = createAsyncThunk<Movie, { updates: Partial<createMovie> }>(
   "movies/createMovie",
   async (updates) => {
     try {
@@ -69,7 +81,7 @@ export const createMovie = createAsyncThunk<Movie, { updates: Partial<Movie> }>(
 // Async thunk for editing a movie
 export const editMovie = createAsyncThunk<
   Movie,
-  { slug: string; updates: Partial<Movie> }
+  { slug: string; updates: Partial<UpdateMovie> }
 >("movies/editMovie", async ({ slug, updates }) => {
   const response = await fetch(`/api/movies/${slug}`, {
     method: "PATCH",

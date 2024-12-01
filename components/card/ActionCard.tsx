@@ -9,27 +9,27 @@ function ActionCard({ slug }: { slug: string }) {
       {/* Icons */}
       <div className="flex gap-4">
         {/* Play */}
-        <button
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-green-600 hover:bg-green-500 transition duration-300"
-          title="Play"
-        >
-          <FaPlay />
-        </button>
+        {/*<button*/}
+        {/*  className="flex items-center justify-center w-10 h-10 rounded-full bg-green-600 hover:bg-green-500 transition duration-300"*/}
+        {/*  title="Play"*/}
+        {/*>*/}
+        {/*  <FaPlay />*/}
+        {/*</button>*/}
         {/* Edit */}
         <button
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 transition duration-300"
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-[#224957] hover:bg-blue-500 transition duration-300"
           title="Edit"
-          onClick={() => router.push(`/movies/edit/${slug}`)}
+          onClick={() => router.push(`/movies/edit?name=${slug}`)}
         >
           <FaEdit />
         </button>
         {/* Delete */}
-        <button
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 transition duration-300"
-          title="Delete"
-        >
-          <FaTrash />
-        </button>
+        {/*<button*/}
+        {/*  className="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 transition duration-300"*/}
+        {/*  title="Delete"*/}
+        {/*>*/}
+        {/*  <FaTrash />*/}
+        {/*</button>*/}
       </div>
     </div>
   );

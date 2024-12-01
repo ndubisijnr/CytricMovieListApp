@@ -11,6 +11,7 @@ import Pagination from "@/components/pagination/Pagination";
 import { fetchMovies } from "@/store/features/movies/moviesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/storeHooks";
 import { removeCookies } from "@/utils/cookies";
+import Input from "@/components/input/Input";
 
 const HomePage = () => {
     const router = useRouter();
@@ -36,7 +37,7 @@ const HomePage = () => {
     console.log("Movies:", movies);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 8;
 
     // Access `movies.data` for slicing
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -63,7 +64,7 @@ const HomePage = () => {
     );
 
     const MovieList = () => (
-        <div className="w-full lg:p-20 p-1">
+        <div className="w-full lg:p-20">
             <div className="flex justify-between items-center w-full">
                 <div className="flex items-center gap-2">
                     <h2 className="header-five lg:header-three">My movies</h2>
@@ -76,19 +77,23 @@ const HomePage = () => {
                         onClick={() => router.push("/movies/create")}
                     />
                 </div>
-                <div className="flex items-center gap-5">
-                    <h2 className="header-six">Logout</h2>
-                    <Image
-                        src="/logout.png"
-                        width={24}
-                        height={24}
-                        alt="logout icon"
-                        className="cursor-pointer"
-                        onClick={logout}
-                    />
+                <div className="flex justify-center items-start gap-5">
+                    <Input type={'search'} name={'search'} inputId={'search_id'} onChange={() => {}} value={''} classProps={''} error={''} label={'search for movie'} />
+                    <div className="flex gap-5">
+                        <h2 className="header-six">Logout</h2>
+                        <Image
+                            src="/logout.png"
+                            width={24}
+                            height={24}
+                            alt="logout icon"
+                            className="cursor-pointer"
+                            onClick={logout}
+                        />
+                    </div>
+
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-5 pb-5">
                 {currentItems.map((item) => (
                     <MovieCard
                         key={item.id}

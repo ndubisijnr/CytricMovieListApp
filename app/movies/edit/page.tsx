@@ -4,18 +4,19 @@ import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
 import {useAppSelector, useAppDispatch} from "@/store/storeHooks";
 import React, {useState} from "react";
-import {useRouter} from "next/navigation";
-import {createMovie} from "@/store/features/movies/moviesSlice";
+import {useRouter, useSearchParams} from "next/navigation";
+import {editMovie} from "@/store/features/movies/moviesSlice";
 
-const CreateMoviePage = () => {
 
+const EditMoviePage = () => {
   const router = useRouter();
+  const query = useSearchParams().get('name');
   const dispatch = useAppDispatch();
   const { } = useAppSelector((state) => state.movies); // Select loading and error from auth state
   const [value, setValue] = useState("");
-  const [formData, setFormData] = useState({ title: "", published: "",poster:"" });
+  const [formData, setFormData] = useState({ title: "", published: "",poster:""});
   const [errors, setErrors] = useState({title: "", published: "",poster:"" });
-  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -44,15 +45,12 @@ const CreateMoviePage = () => {
 
     try {
       // Update poster value in formData
-      setLoading(true)
       const updatedFormData = { ...formData, poster: value };
-      console.log("json obj:", updatedFormData)
 
       // Dispatch action
-      const result = await dispatch(createMovie(updatedFormData)).unwrap();
-      setLoading(false)
+      const result = await dispatch(editMovie(updatedFormData)).unwrap();
 
-      if (createMovie.fulfilled.match(result)) {
+      if (editMovie.fulfilled.match(result)) {
         // Clear form after successful submission
         console.log("Movie created successfully", result.payload);
         setFormData({ title: "", published: "", poster: "" });
@@ -65,31 +63,31 @@ const CreateMoviePage = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-    <h1 className="lg:header-two header-four">Create a new movie</h1>
+    <h1 className="lg:header-two header-four">Edit {query}</h1>
 
     <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
       <div className="relative w-full lg:w-1/4">
-        <Input type={'text'} error={errors.title} value={formData.title} onChange={handleInputChange} inputId={'create-title'} label={"Title"} classProps="lg:w-[356px] h-[45px]" name={'title'}/>
+        <Input type={'text'} error={errors.title} value={formData.title} onChange={handleEditInputChange} inputId={'edit-title'} label={"Title"} classProps="lg:w-[356px] h-[45px]" name={'title'}/>
         <Input
             type="text"
             error={errors.published}
             value={formData.published}
-            onChange={handleInputChange}
+            onChange={handleEditInputChange}
             inputId="create-publishing"
             label="Publishing year"
             classProps="lg:w-[261px] h-[45px]"
             name="published"
         />
         <div className="flex items-center w-full lg:w-auto gap-5 mt-15">
-          <Button disabled={loading}  text={'Cancel'} classProps="bg-transparent border-2 hover:scale-105" clickEvt={() => router.push('/')}/>
-          <Button text={loading ? "Loading..." : "Login"} disabled={loading}  classProps="hover:scale-105 hover:bg-green-400" clickEvt={handleSubmit}/>
+          <Button text={'Cancel'} classProps="bg-transparent border-2" clickEvt={() => router.push('/')}/>
+          <Button text={'Submit'} classProps="" clickEvt={() => handleSubmit}/>
         </div>
 
       </div>
@@ -98,4 +96,4 @@ const CreateMoviePage = () => {
 
 };
 
-export default CreateMoviePage;
+export default EditMoviePage;
