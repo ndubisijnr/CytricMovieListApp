@@ -49,7 +49,7 @@ const CreateMoviePage = () => {
       console.log("json obj:", updatedFormData)
 
       // Dispatch action
-      const result = await dispatch(createMovie(updatedFormData)).unwrap();
+      const result = await dispatch(createMovie({updates:updatedFormData})).unwrap();
       setLoading(false)
 
       if (createMovie.fulfilled.match(result)) {
