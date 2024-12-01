@@ -18,20 +18,6 @@ const HomePage = () => {
     const dispatch = useAppDispatch();
 
 
-    interface Movie {
-        id: string;
-        title: string;
-        slug: string;
-        poster: string;
-        published: string;
-    }
-
-    // interface MoviesState {
-    //     data: Movie[]; // Array of movie objects
-    //     loading: boolean; // Loading state
-    // }
-
-
     const { data:movies, loading } = useAppSelector((state) => state.movies);
 
     // const {} = data || [];  Fallback to an empty array if data is undefined
