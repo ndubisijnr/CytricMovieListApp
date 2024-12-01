@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { FaEdit, FaPlay, FaTrash } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+// FaPlay, FaTrash
 
 function ActionCard({ slug }: { slug: string }) {
   const router = useRouter();
