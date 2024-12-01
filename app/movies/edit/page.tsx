@@ -70,7 +70,7 @@ const EditMoviePage = () => {
   };
 
   return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-    <h1 className="lg:header-two header-four">Edit {query}</h1>
+    <h1 className="lg:header-two header-four">Edit {query ? query : "" }</h1>
     <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
       <div className="relative w-full lg:w-1/4">
