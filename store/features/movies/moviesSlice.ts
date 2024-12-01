@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {Movie} from "@prisma/client";
 // Define the initial state
-interface MoviesState {
+interface MoviesResponse {
   data: Movie[];
-  loading: boolean;
-  error: string | null;
-  imageUrl: string | null;
 }
 
 type UpdateMovie = {
@@ -21,15 +18,22 @@ type createMovie = {
   poster: string
 }
 
-const initialState: MoviesState = {
+type MovieState = {
+  data: Movie[]
+  loading: boolean;
+  error: string|null,
+  imageUrl: string|null,
+
+}
+const initialState: MovieState=  {
   data: [],
   loading: false,
-  error: null,
-  imageUrl: null,
+  error: "",
+  imageUrl: "",
 };
 
 // Async thunk for fetching movies
-export const fetchMovies = createAsyncThunk<Movie[]>(
+export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
   async () => {
     const response = await fetch("/api/movies");
@@ -38,7 +42,7 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
       throw new Error("Failed to fetch movies");
     }
 
-    return (await response.json()) as Movie[];
+    return (await response.json());
   }
 );
 
@@ -125,13 +129,10 @@ const moviesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchMovies.fulfilled,
-        (state, action: PayloadAction<Movie[]>) => {
-          state.loading = false;
-          state.data = action.payload;
-        }
-      )
+        .addCase(fetchMovies.fulfilled, (state, action: PayloadAction<MoviesResponse>) => {
+              state.loading = false;
+              state.data = action.payload.data;
+            })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";

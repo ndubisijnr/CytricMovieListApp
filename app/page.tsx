@@ -17,10 +17,6 @@ const HomePage = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
 
-    interface MoviesState {
-        data: Movie[]; // Array of movie objects
-        loading: boolean; // Loading state
-    }
 
     interface Movie {
         id: string;
@@ -30,18 +26,24 @@ const HomePage = () => {
         published: string;
     }
 
-    const { data, loading } = useAppSelector((state: { movies: MoviesState }) => state.movies);
+    // interface MoviesState {
+    //     data: Movie[]; // Array of movie objects
+    //     loading: boolean; // Loading state
+    // }
 
-    const movies = data || []; // Fallback to an empty array if data is undefined
 
-    console.log("Movies:", movies);
+    const { data:movies, loading } = useAppSelector((state) => state.movies);
+
+    // const {} = data || [];  Fallback to an empty array if data is undefined
+    console.log(movies)
+
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
 
     // Access `movies.data` for slicing
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentItems = movies?.data?.slice(startIndex, startIndex + itemsPerPage) || [];
+    const currentItems = movies?.slice(startIndex, startIndex + itemsPerPage) || [];
 
     useEffect(() => {
         dispatch(fetchMovies());
@@ -106,7 +108,7 @@ const HomePage = () => {
             </div>
             <Pagination
                 itemsPerPage={itemsPerPage}
-                totalItems={movies?.data?.length || 0}
+                totalItems={movies?.length || 0}
                 onPageChange={(page) => setCurrentPage(page)}
             />
         </div>
@@ -125,7 +127,7 @@ const HomePage = () => {
 
     return (
         <>
-            {!movies?.data?.length ? (
+            {!movies?.length ? (
                 <div className="flex min-h-screen items-center">
                     <EmptyState />
                 </div>
