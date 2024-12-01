@@ -6,7 +6,6 @@ import {useAppSelector, useAppDispatch} from "@/store/storeHooks";
 import React, {useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {editMovie} from "@/store/features/movies/moviesSlice";
-import { Suspense } from 'react'
 
 
 const EditMoviePage = () => {
@@ -14,19 +13,19 @@ const EditMoviePage = () => {
   const query = useSearchParams().get('name');
 
   const dispatch = useAppDispatch();
-  const { } = useAppSelector((state) => state.movies); // Select loading and error from auth state
+  const {} = useAppSelector((state) => state.movies); // Select loading and error from auth state
   const [value, setValue] = useState("");
-  const [formData, setFormData] = useState({ id:"", title: "", published: "",poster:""});
-  const [errors, setErrors] = useState({title: "", published: "",poster:"" });
+  const [formData, setFormData] = useState({id: "", title: "", published: "", poster: ""});
+  const [errors, setErrors] = useState({title: "", published: "", poster: ""});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Reset errors
-    setErrors({ title: "", published: "", poster: "" });
+    setErrors({title: "", published: "", poster: ""});
 
     // Validate form fields
-    const newErrors = { title: "", published: "", poster: "" };
+    const newErrors = {title: "", published: "", poster: ""};
 
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
@@ -47,15 +46,15 @@ const EditMoviePage = () => {
 
     try {
       // Update poster value in formData
-      const updatedFormData = { ...formData, poster: value };
+      const updatedFormData = {...formData, poster: value};
 
       // Dispatch action
-      const result = await dispatch(editMovie( {slug:"", updates:updatedFormData})).unwrap();
+      const result = await dispatch(editMovie({slug: "", updates: updatedFormData})).unwrap();
 
       if (editMovie.fulfilled.match(result)) {
         // Clear form after successful submission
         console.log("Movie created successfully", result.payload);
-        setFormData({id:"", title: "", published: "", poster: "" });
+        setFormData({id: "", title: "", published: "", poster: ""});
         setValue(""); // Clear poster input if applicable
       } else {
         console.error("Movie creation failed", result);
@@ -66,17 +65,17 @@ const EditMoviePage = () => {
   };
 
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    const {name, value} = e.target;
+    setFormData((prevState) => ({...prevState, [name]: value}));
   };
 
-  return  <Suspense>
-    <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-      <h1 className="lg:header-two header-four">Edit {query}</h1>
-      <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
+  return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
+    <h1 className="lg:header-two header-four">Edit {query}</h1>
+    <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
       <div className="relative w-full lg:w-1/4">
-        <Input type={'text'} error={errors.title} value={formData.title} onChange={handleEditInputChange} inputId={'edit-title'} label={"Title"} classProps="lg:w-[356px] h-[45px]" name={'title'}/>
+        <Input type={'text'} error={errors.title} value={formData.title} onChange={handleEditInputChange}
+               inputId={'edit-title'} label={"Title"} classProps="lg:w-[356px] h-[45px]" name={'title'}/>
         <Input
             type="text"
             error={errors.published}
@@ -94,8 +93,7 @@ const EditMoviePage = () => {
 
       </div>
     </div>
-    </div>
-  </Suspense>
+  </div>
 
 
 };
