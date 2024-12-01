@@ -4,13 +4,12 @@ import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
 import {useAppSelector, useAppDispatch} from "@/store/storeHooks";
 import React, {useState} from "react";
-import {useRouter, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {editMovie} from "@/store/features/movies/moviesSlice";
 
 
 const EditMoviePage = () => {
   const router = useRouter();
-  const query = useSearchParams().get('name');
 
   const dispatch = useAppDispatch();
   const {} = useAppSelector((state) => state.movies); // Select loading and error from auth state
@@ -70,7 +69,7 @@ const EditMoviePage = () => {
   };
 
   return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-    <h1 className="lg:header-two header-four">Edit {query ? query : "" }</h1>
+    <h1 className="lg:header-two header-four">Edit</h1>
     <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
       <div className="relative w-full lg:w-1/4">
