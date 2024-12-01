@@ -6,6 +6,7 @@ import {useAppSelector, useAppDispatch} from "@/store/storeHooks";
 import React, {useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {editMovie} from "@/store/features/movies/moviesSlice";
+import { Suspense } from 'react'
 
 
 const EditMoviePage = () => {
@@ -69,7 +70,9 @@ const EditMoviePage = () => {
   };
 
   return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-    <h1 className="lg:header-two header-four">Edit {query}</h1>
+    <Suspense>
+      <h1 className="lg:header-two header-four">Edit {query}</h1>
+    </Suspense>
 
     <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
