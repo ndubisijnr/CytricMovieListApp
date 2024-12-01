@@ -12,6 +12,7 @@ import { Suspense } from 'react'
 const EditMoviePage = () => {
   const router = useRouter();
   const query = useSearchParams().get('name');
+
   const dispatch = useAppDispatch();
   const { } = useAppSelector((state) => state.movies); // Select loading and error from auth state
   const [value, setValue] = useState("");
@@ -69,12 +70,10 @@ const EditMoviePage = () => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  return <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
-    <Suspense>
+  return  <Suspense>
+    <div className="w-full min-h-screen overflow-scroll lg:p-20 p-5">
       <h1 className="lg:header-two header-four">Edit {query}</h1>
-    </Suspense>
-
-    <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
+      <div className="flex items-start flex-col lg:flex-row w-full pt-10 gap-20">
       <AddMovieImage setValue={setValue}/>
       <div className="relative w-full lg:w-1/4">
         <Input type={'text'} error={errors.title} value={formData.title} onChange={handleEditInputChange} inputId={'edit-title'} label={"Title"} classProps="lg:w-[356px] h-[45px]" name={'title'}/>
@@ -95,7 +94,9 @@ const EditMoviePage = () => {
 
       </div>
     </div>
-  </div>
+    </div>
+  </Suspense>
+
 
 };
 
