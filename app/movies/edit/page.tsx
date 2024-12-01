@@ -14,7 +14,7 @@ const EditMoviePage = () => {
   const dispatch = useAppDispatch();
   const { } = useAppSelector((state) => state.movies); // Select loading and error from auth state
   const [value, setValue] = useState("");
-  const [formData, setFormData] = useState({ title: "", published: "",poster:""});
+  const [formData, setFormData] = useState({ id:"", title: "", published: "",poster:""});
   const [errors, setErrors] = useState({title: "", published: "",poster:"" });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,12 +48,12 @@ const EditMoviePage = () => {
       const updatedFormData = { ...formData, poster: value };
 
       // Dispatch action
-      const result = await dispatch(editMovie(updatedFormData)).unwrap();
+      const result = await dispatch(editMovie( {slug:"", updates:updatedFormData})).unwrap();
 
       if (editMovie.fulfilled.match(result)) {
         // Clear form after successful submission
         console.log("Movie created successfully", result.payload);
-        setFormData({ title: "", published: "", poster: "" });
+        setFormData({id:"", title: "", published: "", poster: "" });
         setValue(""); // Clear poster input if applicable
       } else {
         console.error("Movie creation failed", result);

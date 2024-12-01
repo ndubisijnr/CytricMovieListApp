@@ -89,7 +89,7 @@ const CreateMoviePage = () => {
         />
         <div className="flex items-center w-full lg:w-auto gap-5 mt-15">
           <Button disabled={loading}  text={'Cancel'} classProps="bg-transparent border-2 hover:scale-105" clickEvt={() => router.push('/')}/>
-          <Button text={loading ? "Loading..." : "Login"} disabled={loading}  classProps="hover:scale-105 hover:bg-green-400" clickEvt={handleSubmit}/>
+          <Button text={loading ? "Loading..." : "Login"} disabled={loading}  classProps="hover:scale-105 hover:bg-green-400" clickEvt={() => handleSubmit}/>
         </div>
 
       </div>
